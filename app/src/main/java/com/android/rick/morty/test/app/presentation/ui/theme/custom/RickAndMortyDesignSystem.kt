@@ -20,7 +20,9 @@ data class CustomColors(
 data class CustomTypography(
     val titleSmall: TextStyle,
     val titleLarge: TextStyle,
-    val body: TextStyle
+    val bodySmall: TextStyle,
+    val bodyNormal: TextStyle,
+    val bodyLarge: TextStyle
 )
 
 data class CustomShapes(
@@ -28,10 +30,11 @@ data class CustomShapes(
     val button: Shape
 )
 
-data class CustomSizes(
+data class CustomSpacing(
     val small: Dp,
     val medium: Dp,
-    val large: Dp
+    val large: Dp,
+    val extraLarge: Dp
 )
 
 @SuppressLint("CompositionLocalNaming")
@@ -51,7 +54,9 @@ val RickAndMortyTextStyles = staticCompositionLocalOf {
     CustomTypography(
         titleLarge = TextStyle.Default,
         titleSmall = TextStyle.Default,
-        body = TextStyle.Default
+        bodySmall = TextStyle.Default,
+        bodyNormal = TextStyle.Default,
+        bodyLarge = TextStyle.Default
     )
 }
 
@@ -65,9 +70,10 @@ val RickAndMortyTextShapes = staticCompositionLocalOf {
 
 @SuppressLint("CompositionLocalNaming")
 val RickAndMortySizes = staticCompositionLocalOf {
-    CustomSizes(
+    CustomSpacing(
         small = Dp.Unspecified,
         medium = Dp.Unspecified,
-        large = Dp.Unspecified
+        large = Dp.Unspecified,
+        extraLarge = Dp.Unspecified
     )
 }

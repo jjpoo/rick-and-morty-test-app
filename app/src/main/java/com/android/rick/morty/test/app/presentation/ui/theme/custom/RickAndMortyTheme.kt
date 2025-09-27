@@ -37,9 +37,11 @@ val lightColors = CustomColors(
 
 // Typography
 val typography = CustomTypography(
-    titleSmall = TextStyle(fontSize = 12.sp),
+    titleSmall = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Bold),
     titleLarge = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-    body = TextStyle(fontSize = 16.sp)
+    bodySmall = TextStyle(fontSize = 8.sp),
+    bodyNormal = TextStyle(fontSize = 12.sp),
+    bodyLarge = TextStyle(fontSize = 16.sp)
 )
 
 // Shapes
@@ -48,11 +50,12 @@ val shapes = CustomShapes(
     button = RoundedCornerShape(20)
 )
 
-// Sizes
-val sizes = CustomSizes(
+// Spacing
+val sizes = CustomSpacing(
     small = 4.dp,
     medium = 8.dp,
-    large = 16.dp
+    large = 16.dp,
+    extraLarge = 24.dp
 )
 
 @Composable
@@ -71,12 +74,12 @@ fun RinkAndMortyAppTheme(
 }
 
 object RickAndMortyTheme {
-    val colorScheme: CustomColors
+    val color: CustomColors
         @Composable get() = RickAndMortyColorScheme.current
 
-    val typography: CustomTypography
+    val txtStyle: CustomTypography
         @Composable get() = RickAndMortyTextStyles.current
 
-    val size: CustomSizes
+    val space: CustomSpacing
         @Composable get() = RickAndMortySizes.current
 }
