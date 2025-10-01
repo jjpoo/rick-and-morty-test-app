@@ -4,84 +4,133 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import com.android.rick.morty.test.app.R
 import com.android.rick.morty.test.app.domain.model.Character
-import com.android.rick.morty.test.app.domain.model.Gender
-import com.android.rick.morty.test.app.domain.model.Origin
-import com.android.rick.morty.test.app.domain.model.Species
-import com.android.rick.morty.test.app.domain.model.Status
+import com.android.rick.morty.test.app.presentation.state.RickAndMortyUiContract
 import com.android.rick.morty.test.app.presentation.ui.theme.custom.RickAndMortyTheme
 
 @Composable
 fun DetailsScreen(
-    character: Character
+//    detailsState: RickAndMortyUiContract.DetailsScreenState,
+//    event: (RickAndMortyUiContract.ScreenEvent) -> Unit
+) {
+//    when (detailsState) {
+//        is RickAndMortyUiContract.DetailsScreenState.Loading -> {
+//            Box(
+//                modifier = Modifier.fillMaxSize(),
+//                contentAlignment = Alignment.Center
+//            ) {
+//                CircularProgressIndicator()
+//            }
+//        }
+//
+//        is RickAndMortyUiContract.DetailsScreenState.Success -> {
+//            DetailsScreenContent(
+//                character = detailsState.character,
+//                event = event
+//            )
+//        }
+//
+//        is RickAndMortyUiContract.DetailsScreenState.Error -> {
+//            Box(
+//                modifier = Modifier.fillMaxSize(),
+//                contentAlignment = Alignment.Center
+//            ) {
+//                Text(
+//                    text = detailsState.message ?: stringResource(R.string.unknown_error),
+//                    style = RickAndMortyTheme.txtStyle.bodyNormal
+//                )
+//            }
+//        }
+//    }
+}
+
+@Composable
+private fun DetailsScreenContent(
+    character: Character,
+    event: (RickAndMortyUiContract.ScreenEvent) -> Unit
 ) {
     Scaffold(
+        modifier = Modifier.statusBarsPadding(),
         topBar = {
-            DetailsTopBar(modifier = Modifier.padding(horizontal = RickAndMortyTheme.space.large))
+            DetailsTopBar(
+                character = character,
+                onBackClicked = {
+                    event(RickAndMortyUiContract.DetailsScreenEvents.OnBackClicked)
+                },
+                onFavClicked = { id, state ->
+                    event(RickAndMortyUiContract.DetailsScreenEvents.OnFavClicked(id, state))
+                },
+                modifier = Modifier.padding(top = RickAndMortyTheme.space.large)
+            )
         }
-    ) {
-        DetailsScreenContent(
-            character = character,
-            modifier = Modifier.padding(it)
-        )
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(horizontal = RickAndMortyTheme.space.medium),
+            verticalArrangement = Arrangement.spacedBy(RickAndMortyTheme.space.medium)
+        ) {
+            AsyncImage(
+                model = character.image,
+                contentDescription = "Character image",
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.Fit,
+                placeholder = painterResource(R.drawable.fallback_img),
+                error = painterResource(R.drawable.fallback_img)
+            )
+            Text(
+                text = character.name,
+                style = RickAndMortyTheme.txtStyle.titleSmall
+            )
+            Text(
+                text = character.created,
+                style = RickAndMortyTheme.txtStyle.bodyNormal
+            )
+            CharacterDetailsTabRow(
+                character = character
+            )
+        }
     }
 }
 
-@Composable
-fun DetailsScreenContent(
-    character: Character,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(RickAndMortyTheme.space.medium)
-    ) {
-        AsyncImage(
-            model = character.image,
-            contentDescription = "Character image",
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.Fit,
-            placeholder = painterResource(R.drawable.fallback_img),
-            error = painterResource(R.drawable.fallback_img)
-        )
-        Text(
-            text = character.name,
-            style = RickAndMortyTheme.txtStyle.titleSmall
-        )
-        Text(
-            text = character.creationDate,
-            style = RickAndMortyTheme.txtStyle.bodyNormal
-        )
-        CharacterDetailsTabRow(
-            character = character
-        )
-    }
-}
+//@Preview
+//@Composable
+//private fun DetailsScreenPreview() {
+//    DetailsScreen(
+////        detailsState = RickAndMortyUiContract.DetailsScreenState.Success(
+////            character = Character(
+////                id = 2,
+////                name = "Rick Sanchez",
+////                image = "",
+////                status = Status.ALIVE,
+////                species = Species.HUMAN,
+////                gender = Gender.MALE,
+////                type = "",
+////                origin = "Earth",
+////                location = "",
+////                created = "11/4/2017",
+////                episodes = listOf(),
+////                isFavorite = false
+////            )
+////        ),
+////        event = {}
+////    )
+//}
 
-@Preview
-@Composable
-private fun DetailsScreenPreview() {
-    DetailsScreen(
-        character = Character(
-            id = 2,
-            name = "Rick Sanchez",
-            image = "",
-            status = Status.ALIVE,
-            species = Species.HUMAN,
-            gender = Gender.MALE,
-            origin = Origin(name = "Earth", url = ""),
-            location = "",
-            creationDate = "11/4/2017",
-            episodes = listOf()
-        )
-    )
-}
+//@Preview
+//@Composable
+//private fun DetailsScreenLoadingPreview() {
+//    DetailsScreen(
+//        detailsState = RickAndMortyUiContract.DetailsScreenState.Loading,
+//        event = {}
+//    )
+//}
