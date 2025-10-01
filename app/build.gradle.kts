@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -56,7 +57,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.cronet.embedded)
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.paging.common.ktx)
+    testImplementation(libs.androidx.paging.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -71,14 +77,19 @@ dependencies {
     implementation(libs.retrofit.android)
     implementation(libs.logging.interceptor)
     implementation(libs.converter.moshi)
-    ksp(libs.moshi.kotlin.codegen)
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+    implementation(libs.androidx.room.paging)
     // Paging
-    implementation(libs.paging)
+    implementation(libs.paging.runtime.ktx)
     implementation(libs.paging.compose)
     //Coil
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+    //Moshi
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.kotlin.codegen)
 }

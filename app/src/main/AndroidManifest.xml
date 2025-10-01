@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
+        android:name=".di.RickAndMortyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,7 +15,7 @@
         android:theme="@style/Theme.Rickandmortytestapp"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.characters.MainActivity"
+            android:name=".presentation.characters.CharactersActivity"
             android:exported="true"
             android:theme="@style/Theme.Rickandmortytestapp">
             <intent-filter>
@@ -20,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.details.DetailsActivity" />
     </application>
 
 </manifest>

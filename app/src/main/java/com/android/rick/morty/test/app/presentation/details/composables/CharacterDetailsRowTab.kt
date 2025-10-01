@@ -14,7 +14,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.rick.morty.test.app.domain.model.Character
 import com.android.rick.morty.test.app.domain.model.Gender
-import com.android.rick.morty.test.app.domain.model.Origin
 import com.android.rick.morty.test.app.domain.model.Species
 import com.android.rick.morty.test.app.domain.model.Status
 import com.android.rick.morty.test.app.presentation.ui.theme.custom.RickAndMortyTheme
@@ -34,7 +33,7 @@ fun CharacterDetailsTabRow(
     character: Character,
     modifier: Modifier = Modifier
 ) {
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf("Info", "Episodes")
 
     Column(
@@ -93,7 +92,7 @@ fun InformationTab(
         }
         LocationOriginInfo(
             title = "Origin",
-            content = character.origin.name
+            content = character.origin
         )
         LocationOriginInfo(
             title = "Location",
@@ -147,10 +146,12 @@ private fun CharacterDetailsTabRowPreview() {
                 status = Status.ALIVE,
                 species = Species.HUMAN,
                 gender = Gender.MALE,
-                origin = Origin(name = "Earth", url = ""),
+                type = "",
+                origin = "Earth",
                 location = "Rick Land",
-                creationDate = "11/4/2017",
-                episodes = listOf()
+                created = "11/4/2017",
+                episodes = listOf(),
+                isFavorite = false
             )
         )
     }
