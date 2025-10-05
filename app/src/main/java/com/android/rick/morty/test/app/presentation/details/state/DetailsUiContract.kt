@@ -5,21 +5,23 @@ import com.android.rick.morty.test.app.presentation.core.UiContract
 
 sealed class DetailsUiContract : UiContract {
 
-    sealed interface States : UiContract.State {
-        data object Loading : States
-        data class Success(val character: Character? = null) : States
-        data class Error(val message: String = "") : States
+    sealed interface State : UiContract.State {
+        data object Loading : State
+        data class Success(
+            val character: Character? = null,
+            val isFavourite: Boolean = false
+        ) : State
+
+        data class Error(val message: String = "") : State
     }
 
-    sealed interface Events : UiContract.Event {
-        data object OnBackClicked : Events
-        data class OnFavClicked(
-            val characterId: Int,
-            val currentState: Boolean
-        ) : Events
+    sealed interface Event : UiContract.Event {
+        data object OnBackClicked : Event
+        data class OnFavClicked(val characterId: Int) : Event
     }
 
-    sealed class Effects : UiContract.Effect {
-        data object NavigateBack : Effects()
+    sealed class Effect : UiContract.Effect {
+        data object NavigateBack : Effect()
+        data class ShowErrorToast(val message: String) : Effect()
     }
 }

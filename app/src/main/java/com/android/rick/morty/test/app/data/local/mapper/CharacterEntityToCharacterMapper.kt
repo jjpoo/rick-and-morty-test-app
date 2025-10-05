@@ -15,6 +15,5 @@ fun CharacterEntity.toCharacter() = Character(
     location = location,
     image = image,
     episodes = if (episodes.isEmpty()) emptyList() else episodes.split(","),
-    created = created,
-    isFavorite = false
+    created = created
 )

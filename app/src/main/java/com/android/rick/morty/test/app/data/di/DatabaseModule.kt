@@ -26,5 +26,8 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideDao(database: CharactersDatabase) = database.dao
+    fun provideCharactersDao(database: CharactersDatabase) = database.charactersDao
+
+    @Provides
+    fun provideFavouriteDao(database: CharactersDatabase) = database.favouriteDao
 }

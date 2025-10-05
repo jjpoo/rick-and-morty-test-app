@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">rick-and-morty-test-app</string>
+    <string name="unknown_error">unknown error</string>
+    <string name="characters">characters</string>
+    <string name="details">details</string>
+    <string name="search_character">Search character</string>
+    <string name="origin">Origin</string>
+    <string name="location">Location</string>
+    <string name="sort_asc">Sort Ascending</string>
+    <string name="sort_desc">Sort Descending</string>
+    <string name="sort_list">Sort</string>
 </resources>

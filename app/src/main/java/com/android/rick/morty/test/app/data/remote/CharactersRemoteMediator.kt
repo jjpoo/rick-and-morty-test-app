@@ -38,10 +38,10 @@ class CharactersRemoteMediator(
             val characters = api.getCharacters(page = loadKey)
             charactersDatabase.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    charactersDatabase.dao.clearAll()
+                    charactersDatabase.charactersDao.clearAll()
                 }
                 val characterEntities = characters.results.map { it.toEntity() }
-                charactersDatabase.dao.upsertAll(characterEntities)
+                charactersDatabase.charactersDao.upsertAll(characterEntities)
             }
             MediatorResult.Success(
                 endOfPaginationReached = characters.results.isEmpty()

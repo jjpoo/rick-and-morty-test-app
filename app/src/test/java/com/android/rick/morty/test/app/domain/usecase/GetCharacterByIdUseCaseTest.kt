@@ -1,4 +1,4 @@
-package com.android.rick.morty.test.app.domain
+package com.android.rick.morty.test.app.domain.usecase
 
 import com.android.rick.morty.test.app.domain.model.Character
 import com.android.rick.morty.test.app.domain.model.Gender
@@ -33,8 +33,7 @@ class GetCharacterByIdUseCaseTest {
         origin = "Earth",
         location = "",
         created = "11/4/2017",
-        episodes = listOf(),
-        isFavorite = false
+        episodes = listOf()
     )
 
     private val testCharacterMorty = Character(
@@ -48,8 +47,7 @@ class GetCharacterByIdUseCaseTest {
         origin = "Earth",
         location = "",
         created = "11/4/2017",
-        episodes = listOf(),
-        isFavorite = false
+        episodes = listOf()
     )
 
     @Before
@@ -109,17 +107,6 @@ class GetCharacterByIdUseCaseTest {
         assertEquals(testCharacterMorty, result2)
         verify(exactly = 1) { repository.getCharacterById(characterId1) }
         verify(exactly = 1) { repository.getCharacterById(characterId2) }
-    }
-
-    @Test
-    fun `invoke returns favorite character correctly`() = runTest {
-        val characterId = 1
-        val favoriteCharacter = testCharacterRick.copy(isFavorite = true)
-        every { repository.getCharacterById(characterId) } returns flowOf(favoriteCharacter)
-
-        val result = useCase(characterId).first()
-
-        assertEquals(true, result?.isFavorite)
     }
 
     @Test

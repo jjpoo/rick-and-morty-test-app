@@ -1,4 +1,4 @@
-package com.android.rick.morty.test.app.domain
+package com.android.rick.morty.test.app.domain.usecase
 
 import androidx.paging.PagingData
 import androidx.paging.testing.asSnapshot
@@ -37,8 +37,7 @@ class GetCharactersUseCaseTest {
         origin = "Earth",
         location = "Earth",
         created = "2017-11-04T18:48:46.250Z",
-        episodes = listOf("https://rickandmortyapi.com/api/episode/1"),
-        isFavorite = true
+        episodes = listOf("https://rickandmortyapi.com/api/episode/1")
     )
 
     private val testCharacter2 = Character(
@@ -52,8 +51,7 @@ class GetCharactersUseCaseTest {
         origin = "Earth",
         location = "Earth",
         created = "2017-11-04T18:50:00.000Z",
-        episodes = listOf("https://rickandmortyapi.com/api/episode/1"),
-        isFavorite = true
+        episodes = listOf("https://rickandmortyapi.com/api/episode/1")
     )
 
     @Test

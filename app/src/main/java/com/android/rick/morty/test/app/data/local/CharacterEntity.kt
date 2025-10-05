@@ -16,6 +16,5 @@ data class CharacterEntity(
     val location: String,
     val image: String,
     val episodes: String,
-    val created: String,
-    val isFavourite: Boolean = false
+    val created: String
 )

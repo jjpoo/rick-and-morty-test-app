@@ -1,4 +1,4 @@
-package com.android.rick.morty.test.app.domain
+package com.android.rick.morty.test.app.domain.usecase
 
 import com.android.rick.morty.test.app.domain.model.Character
 import com.android.rick.morty.test.app.domain.repository.CharacterRepository

@@ -1,6 +1,6 @@
 package com.android.rick.morty.test.app.domain.di
 
-import com.android.rick.morty.test.app.domain.GetCharactersUseCase
+import com.android.rick.morty.test.app.domain.usecase.GetCharactersUseCase
 import com.android.rick.morty.test.app.domain.repository.CharacterRepository
 import dagger.Module
 import dagger.Provides

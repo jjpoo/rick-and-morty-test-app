@@ -15,6 +15,5 @@ data class Character(
     val origin: String,
     val location: String,
     val created: String,
-    val episodes: List<String>,
-    val isFavorite: Boolean
+    val episodes: List<String>
 ) : Parcelable
