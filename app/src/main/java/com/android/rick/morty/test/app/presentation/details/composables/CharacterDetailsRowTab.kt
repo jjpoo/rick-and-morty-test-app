@@ -19,12 +19,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.android.rick.morty.test.app.R
 import com.android.rick.morty.test.app.domain.model.Character
 import com.android.rick.morty.test.app.domain.model.Gender
 import com.android.rick.morty.test.app.domain.model.Species
 import com.android.rick.morty.test.app.domain.model.Status
+import com.android.rick.morty.test.app.presentation.details.utils.DetailsRowTabs
 import com.android.rick.morty.test.app.presentation.ui.theme.custom.RickAndMortyTheme
 import com.android.rick.morty.test.app.presentation.ui.theme.custom.RinkAndMortyAppTheme
 
@@ -34,17 +37,16 @@ fun CharacterDetailsTabRow(
     modifier: Modifier = Modifier
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val tabs = listOf("Info", "Episodes")
 
     Column(
         modifier = modifier
     ) {
         TabRow(selectedTabIndex = selectedTabIndex) {
-            tabs.forEachIndexed { index, title ->
+            DetailsRowTabs.entries.forEachIndexed { index, detailsRowTabs ->
                 Tab(
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    text = { Text(title) }
+                    text = { Text(detailsRowTabs.name) }
                 )
             }
         }
@@ -56,7 +58,7 @@ fun CharacterDetailsTabRow(
 }
 
 @Composable
-fun InformationTab(
+private fun InformationTab(
     character: Character,
     modifier: Modifier = Modifier
 ) {
@@ -91,23 +93,38 @@ fun InformationTab(
             }
         }
         LocationOriginInfo(
-            title = "Origin",
+            title = stringResource(R.string.origin),
             content = character.origin
         )
         LocationOriginInfo(
-            title = "Location",
+            title = stringResource(R.string.location),
             content = character.location
         )
     }
 }
 
 @Composable
-fun LocationOriginInfo(
+private fun EpisodesTab(episodes: List<String>) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(RickAndMortyTheme.space.medium)
+    ) {
+        items(episodes) { episode ->
+            Text(
+                text = episode,
+                style = RickAndMortyTheme.txtStyle.titleSmall
+            )
+        }
+    }
+}
+
+@Composable
+private fun LocationOriginInfo(
     title: String,
     content: String
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(RickAndMortyTheme.space.small)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(RickAndMortyTheme.space.large)
     ) {
         Text(
             text = title,
@@ -120,19 +137,6 @@ fun LocationOriginInfo(
     }
 }
 
-@Composable
-fun EpisodesTab(episodes: List<String>) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(RickAndMortyTheme.space.medium)
-    ) {
-        items(episodes) { episode ->
-            Text(
-                text = episode,
-                style = RickAndMortyTheme.txtStyle.titleSmall
-            )
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
@@ -150,8 +154,7 @@ private fun CharacterDetailsTabRowPreview() {
                 origin = "Earth",
                 location = "Rick Land",
                 created = "11/4/2017",
-                episodes = listOf(),
-                isFavorite = false
+                episodes = listOf()
             )
         )
     }

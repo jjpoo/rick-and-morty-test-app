@@ -20,7 +20,6 @@ import coil3.compose.AsyncImage
 import com.android.rick.morty.test.app.R
 import com.android.rick.morty.test.app.domain.model.Character
 import com.android.rick.morty.test.app.domain.model.Gender
-import com.android.rick.morty.test.app.domain.model.Origin
 import com.android.rick.morty.test.app.domain.model.Species
 import com.android.rick.morty.test.app.domain.model.Status
 import com.android.rick.morty.test.app.presentation.ui.theme.custom.RickAndMortyTheme
@@ -45,7 +44,7 @@ fun CharactersItem(
                 .size(60.dp)
                 .clip(RoundedCornerShape(RickAndMortyTheme.space.extraLarge)),
             contentScale = ContentScale.Crop,
-            error = painterResource(R.drawable.fallback_img),
+            error = painterResource(R.drawable.fallback_img)
         )
 
         Column(
@@ -75,9 +74,10 @@ fun CharacterListItemPreview() {
                 status = Status.ALIVE,
                 species = Species.HUMAN,
                 gender = Gender.MALE,
-                origin = Origin(name = "Earth", url = ""),
+                origin = "Earth",
+                type = "",
                 location = "",
-                creationDate = "11/4/2017",
+                created = "11/4/2017",
                 episodes = listOf()
             )
         )
