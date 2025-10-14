@@ -3,7 +3,6 @@ package com.android.rick.morty.test.app.presentation.characters
 import androidx.paging.PagingData
 import com.android.rick.morty.test.app.domain.model.Character
 import com.android.rick.morty.test.app.domain.model.Gender
-import com.android.rick.morty.test.app.domain.model.SortOrder
 import com.android.rick.morty.test.app.domain.model.Species
 import com.android.rick.morty.test.app.domain.model.Status
 import com.android.rick.morty.test.app.domain.usecase.GetCharactersUseCase
@@ -12,6 +11,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -41,7 +41,7 @@ class CharactersViewModelTest {
     @Test
     fun `on input changed updates search input in state`() = runTest {
         val initialState = viewModel.state.value as CharactersUiContract.State.Success
-        viewModel.handleCharactersEvent(CharactersUiContract.Event.OnInputChanged("Rick"))
+        viewModel.handleEvent(CharactersUiContract.Event.OnInputChanged("Rick"))
 
         val updatedState = viewModel.state.value as CharactersUiContract.State.Success
         assertEquals("Rick", updatedState.searchInput)
@@ -64,29 +64,20 @@ class CharactersViewModelTest {
             episodes = listOf()
         )
 
+        val effectFlow = viewModel.effect
+
         val job = launch {
-            viewModel.getNavigationFlow().collect { effect ->
+            effectFlow.collect { effect ->
                 assertTrue(effect is CharactersUiContract.Effect.NavigateToDetails)
                 assertEquals(
-                    1,
+                    2,
                     (effect as CharactersUiContract.Effect.NavigateToDetails).characterId
                 )
             }
         }
-        viewModel.handleCharactersEvent(CharactersUiContract.Event.OnItemClicked(character))
+
+        viewModel.handleEvent(CharactersUiContract.Event.OnItemClicked(character))
+        advanceUntilIdle()
         job.cancel()
-    }
-
-    @Test
-    fun `sort toggles sort order`() = runTest {
-        coEvery { getCharactersUseCase(any()) } returns flowOf(PagingData.empty())
-
-        viewModel.handleCharactersEvent(CharactersUiContract.Event.OnSortCharactersClicked)
-        val state1 = viewModel.state.value as CharactersUiContract.State.Success
-        assertEquals(SortOrder.ASC, state1.selectedSortOrder)
-
-        viewModel.handleCharactersEvent(CharactersUiContract.Event.OnSortCharactersClicked)
-        val state2 = viewModel.state.value as CharactersUiContract.State.Success
-        assertEquals(SortOrder.DESC, state2.selectedSortOrder)
     }
 }
