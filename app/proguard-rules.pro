@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep all generated Moshi JsonAdapters so they are not removed by R8
+-keep class *JsonAdapter { *; }
