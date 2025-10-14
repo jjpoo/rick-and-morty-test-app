@@ -2,18 +2,16 @@ package com.android.rick.morty.test.app.presentation.details
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.rick.morty.test.app.domain.usecase.GetCharacterByIdUseCase
 import com.android.rick.morty.test.app.domain.usecase.GetFavouriteStatusUseCase
 import com.android.rick.morty.test.app.domain.usecase.ToggleFavoritesUseCase
+import com.android.rick.morty.test.app.presentation.core.BaseViewModel
+import com.android.rick.morty.test.app.presentation.core.UiContract
 import com.android.rick.morty.test.app.presentation.details.state.DetailsUiContract
 import com.android.rick.morty.test.app.presentation.details.utils.cleanOriginLocationName
 import com.android.rick.morty.test.app.presentation.details.utils.getCreationDate
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,14 +21,14 @@ class DetailsViewModel @Inject constructor(
     private val getCharacterByIdUseCase: GetCharacterByIdUseCase,
     private val toggleFavoritesUseCase: ToggleFavoritesUseCase,
     private val getFavouriteStatusUseCase: GetFavouriteStatusUseCase
-) : ViewModel() {
+) : BaseViewModel<DetailsUiContract.State, DetailsUiContract.Effect>(initialState = DetailsUiContract.State.Loading) {
 
-    private val _state =
-        MutableStateFlow<DetailsUiContract.State>(DetailsUiContract.State.Loading)
-    val state: StateFlow<DetailsUiContract.State> = _state
-
-    private val _effect = MutableSharedFlow<DetailsUiContract.Effect>()
-    fun effect() = _effect
+    override fun handleEvent(event: UiContract.Event) {
+        when (event) {
+            is DetailsUiContract.Event.OnBackClicked -> sendEffect(DetailsUiContract.Effect.NavigateBack)
+            is DetailsUiContract.Event.OnFavClicked -> toggleFavourites(event.characterId)
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadCharacter(characterId: Int) {
@@ -43,19 +41,21 @@ class DetailsViewModel @Inject constructor(
                     character to isFavourite
                 }.collect { (character, isFavourite) ->
                     if (character != null) {
-                        _state.value = DetailsUiContract.State.Success(
-                            character = character.copy(
-                                created = character.created.getCreationDate(),
-                                origin = character.origin.cleanOriginLocationName(),
-                                location = character.origin.cleanOriginLocationName()
-                            ),
-                            isFavourite = isFavourite
-                        )
+                        setState {
+                            DetailsUiContract.State.Success(
+                                character = character.copy(
+                                    created = character.created.getCreationDate(),
+                                    origin = character.origin.cleanOriginLocationName(),
+                                    location = character.origin.cleanOriginLocationName()
+                                ),
+                                isFavourite = isFavourite
+                            )
+                        }
                     }
                 }
             } catch (e: Exception) {
                 e.message?.let { error ->
-                    _effect.emit(DetailsUiContract.Effect.ShowErrorToast(error))
+                    sendEffect(DetailsUiContract.Effect.ShowErrorToast(error))
                 }
             }
         }
@@ -65,9 +65,7 @@ class DetailsViewModel @Inject constructor(
         when (event) {
             is DetailsUiContract.Event.OnBackClicked -> {
                 viewModelScope.launch {
-                    _effect.emit(
-                        DetailsUiContract.Effect.NavigateBack
-                    )
+                    sendEffect(DetailsUiContract.Effect.NavigateBack)
                 }
             }
 
@@ -80,11 +78,13 @@ class DetailsViewModel @Inject constructor(
     private fun toggleFavourites(characterId: Int) {
         viewModelScope.launch {
             val isCharacterInFavourites = toggleFavoritesUseCase(characterId)
-            val currentCharacter = (_state.value as? DetailsUiContract.State.Success)?.character
-            _state.value = DetailsUiContract.State.Success(
-                character = currentCharacter,
-                isFavourite = isCharacterInFavourites
-            )
+            val currentCharacter = (state.value as? DetailsUiContract.State.Success)?.character
+            setState {
+                DetailsUiContract.State.Success(
+                    character = currentCharacter,
+                    isFavourite = isCharacterInFavourites
+                )
+            }
         }
     }
 }

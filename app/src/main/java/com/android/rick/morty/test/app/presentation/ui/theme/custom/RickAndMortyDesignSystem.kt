@@ -71,9 +71,9 @@ val RickAndMortyTextShapes = staticCompositionLocalOf {
 @SuppressLint("CompositionLocalNaming")
 val RickAndMortySizes = staticCompositionLocalOf {
     CustomSpacing(
-        small = Dp.Unspecified,
-        medium = Dp.Unspecified,
-        large = Dp.Unspecified,
-        extraLarge = Dp.Unspecified
+        small = sizes.small,
+        medium = sizes.medium,
+        large = sizes.large,
+        extraLarge = sizes.extraLarge
     )
 }

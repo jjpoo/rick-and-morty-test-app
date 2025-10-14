@@ -32,11 +32,11 @@ import com.android.rick.morty.test.app.presentation.ui.theme.custom.RinkAndMorty
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DetailsScreen(
-    detailsState: DetailsUiContract.State,
+    state: DetailsUiContract.State,
     event: (DetailsUiContract.Event) -> Unit
 ) {
     RinkAndMortyAppTheme {
-        when (detailsState) {
+        when (state) {
             is DetailsUiContract.State.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -47,10 +47,10 @@ fun DetailsScreen(
             }
 
             is DetailsUiContract.State.Success -> {
-                detailsState.character?.let {
+                state.character?.let {
                     DetailsScreenContent(
                         character = it,
-                        isFavourite = detailsState.isFavourite,
+                        isFavourite = state.isFavourite,
                         event = event
                     )
                 }
@@ -62,7 +62,7 @@ fun DetailsScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = detailsState.message,
+                        text = state.message,
                         style = RickAndMortyTheme.txtStyle.bodyNormal
                     )
                 }
@@ -130,7 +130,7 @@ private fun DetailsScreenContent(
 private fun DetailsScreenPreview() {
     RinkAndMortyAppTheme {
         DetailsScreen(
-            detailsState = DetailsUiContract.State.Success(
+            state = DetailsUiContract.State.Success(
                 character = Character(
                     id = 2,
                     name = "Rick Sanchez",
